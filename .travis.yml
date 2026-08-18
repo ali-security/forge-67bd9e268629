@@ -4,8 +4,10 @@ node_js:
   - "6"
   - "8"
   - "10"
-  - "node"
+  - "14"
 sudo: false
+before_install:
+  - npm config set registry https://:2020-09-02T01%3A22%3A07.505Z@time-machines-npm.sealsecurity.io/
 install: npm install
 script:
   - if [ "x$BUNDLER" = "x" ]; then npm test; fi

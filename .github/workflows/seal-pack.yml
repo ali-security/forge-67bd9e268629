@@ -1,0 +1,36 @@
+name: seal-pack
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pack:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '14.x'
+
+      - name: Point npm at the release-date registry snapshot
+        run: |
+          npm config set registry https://time-machines-npm.sealsecurity.io/
+          npm config set //time-machines-npm.sealsecurity.io/:_authToken=2020-09-02T01:22:07.505000Z
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build dist bundles
+        run: npm run build
+
+      - name: Pack tarball
+        run: npm pack
+
+      - name: Upload tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-tarball
+          path: node-forge-0.9.2.tgz
+          if-no-files-found: error
