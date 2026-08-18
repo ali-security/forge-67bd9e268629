@@ -591,5 +591,13 @@ var UTIL = require('../../lib/util');
       var result = UTIL.text.utf16.decode(bytes);
       ASSERT.equal(result, '\ud83c\udc00');
     });
+
+    it('should not provide a url parser', function() {
+      // the custom url parser mis-parsed the host of urls such as
+      // 'http://attacker.example.com#.victim.example.com', which could be
+      // used to make a url appear to belong to another host; it has been
+      // removed in favor of the WHATWG URL parser
+      ASSERT.equal(typeof UTIL.parseUrl, 'undefined');
+    });
   });
 })();

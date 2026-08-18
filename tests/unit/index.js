@@ -22,3 +22,4 @@ require('./pkcs7');
 require('./pkcs12');
 require('./tls');
 require('./ssh');
+require('./http');

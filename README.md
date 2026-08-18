@@ -1969,10 +1969,6 @@ var nodeBuffer = Buffer.from(forgeBuffer.getBytes(), 'binary');
 // make sure you specify the encoding as 'binary'
 var nodeBuffer = Buffer.from('CAFE', 'hex');
 var forgeBuffer = forge.util.createBuffer(nodeBuffer.toString('binary'));
-
-// parse a URL
-var parsed = forge.util.parseUrl('http://example.com/foo?bar=baz');
-// parsed.scheme, parsed.host, parsed.port, parsed.path, parsed.fullHost
 ```
 
 <a name="log" />
