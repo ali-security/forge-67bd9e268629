@@ -599,5 +599,46 @@ var UTIL = require('../../lib/util');
       // removed in favor of the WHATWG URL parser
       ASSERT.equal(typeof UTIL.parseUrl, 'undefined');
     });
+
+    it('should not provide object path functions', function() {
+      // the setPath/getPath/deletePath helpers followed caller-supplied
+      // key arrays into an object hierarchy; setPath could write through a
+      // '__proto__' key and pollute Object.prototype, so all three have
+      // been removed
+      ASSERT.equal(typeof UTIL.setPath, 'undefined');
+      ASSERT.equal(typeof UTIL.getPath, 'undefined');
+      ASSERT.equal(typeof UTIL.deletePath, 'undefined');
+    });
+
+    it('should not pollute Object.prototype via an object path', function() {
+      var object = {};
+      // on a vulnerable version this added 'polluted' to Object.prototype
+      if(typeof UTIL.setPath === 'function') {
+        UTIL.setPath(object, ['__proto__', 'polluted'], 'yes');
+      }
+      try {
+        ASSERT.equal(typeof ({}).polluted, 'undefined');
+        ASSERT.equal(typeof Object.prototype.polluted, 'undefined');
+        ASSERT.equal(typeof object.polluted, 'undefined');
+      } finally {
+        delete Object.prototype.polluted;
+      }
+    });
+
+    it('should not delete Object.prototype properties via a path', function() {
+      var object = {};
+      Object.prototype.forgeCanary = 'safe';
+      try {
+        // on a vulnerable version this followed the '__proto__' key and
+        // deleted the property from Object.prototype
+        if(typeof UTIL.deletePath === 'function') {
+          UTIL.deletePath(object, ['__proto__', 'forgeCanary']);
+        }
+        ASSERT.equal(({}).forgeCanary, 'safe');
+        ASSERT.equal(object.forgeCanary, 'safe');
+      } finally {
+        delete Object.prototype.forgeCanary;
+      }
+    });
   });
 })();
