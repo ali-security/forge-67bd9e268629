@@ -80,7 +80,6 @@ Documentation
 * [Tasks](#task)
 * [Utilities](#util)
 * [Logging](#log)
-* [Debugging](#debug)
 * [Flash Networking Support](#flash)
 
 ### Other
@@ -1977,19 +1976,6 @@ var forgeBuffer = forge.util.createBuffer(nodeBuffer.toString('binary'));
 
 Provides logging to a javascript console using various categories and
 levels of verbosity.
-
-__Examples__
-
-```js
-// TODO
-```
-
-<a name="debug" />
-
-### Debugging
-
-Provides storage of debugging information normally inaccessible in
-closures for viewing/investigation.
 
 __Examples__
 
